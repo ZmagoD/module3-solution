@@ -31,11 +31,13 @@
 
     narrow.found = function() {
       var promise = MenuSearchService.getMatchedMenuItems(narrow.query);
-      promise.then(function (data)  {
-        if ( $.isEmptyObject(data) ) {
-          narrow.empty = 'Nothing found';
-        }
+      promise.then(function (data) {
         narrow.foundItems = data;
+        // if (data.toString() === ""){
+        //   narrow.empty = true;
+        // } else {
+        //   narrow.empty = false;
+        // }
       });
     };
 
@@ -54,8 +56,10 @@
         url: (ApiBasePath + '/menu_items.json')
       }).then(function (result) {
           var foundItems = SearchItems(result, searchTerm);
-
-
+          // debugger;
+          if( foundItems.toString() === "" ) {
+            foundItems=[{short_name:'Nothing Found', name:'',description:''}];
+          }
           // return processed items
           return foundItems;
       });
